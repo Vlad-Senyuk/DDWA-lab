@@ -1,0 +1,164 @@
+<html>
+    <head>
+        <title>Create Account</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="./styles.css">
+
+        <script lang="javascript">
+
+            var itemId = 0;
+
+            function getAccountById(itemId){
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", "http://localhost:2403/accounts/" + itemId, false);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.send();
+
+                var jsonObj = JSON.parse(xhr.responseText);
+
+                if (jsonObj.accountType == "CheckingAccount"){
+                    document.getElementById("accountTypeChecking").checked = true;
+                    document.getElementById("checkingAccountInfo").hidden = false;
+                    document.getElementById("checkingAccountCode").value = jsonObj.checkingAccountCode;
+                    document.getElementById("corganization").value = jsonObj.organization;
+                }else{
+                    document.getElementById("accountTypeSavings").checked = true;
+                    document.getElementById("savingsAccountInfo").hidden = false;
+                    document.getElementById("savingsAccountCode").value = jsonObj.savingsAccountCode;
+                    document.getElementById("sorganization").value = jsonObj.organization;
+                }
+                
+                document.getElementById("accountNumber").value = jsonObj.accountNumber;
+                document.getElementById("accountPIN").value = jsonObj.accountPIN;
+                document.getElementById("accountBalance").value = jsonObj.accountBalance;
+                document.getElementById("dateOfAccountCreation").value = jsonObj.dateOfAccountCreation;
+                document.getElementById("accountUser").value = jsonObj.accountUser;
+            }
+            
+            function onLoadOverride(){
+                    var paramValue = window.location.search.replace( '?item=', '');
+                    
+                    if (paramValue != ''){
+                        itemId = paramValue;
+                        document.getElementById("createAccountButton").hidden = true;
+                        document.getElementById("updateAccountButton").hidden = false;
+                        getAccountById(paramValue);
+                    }
+                    
+                }
+        </script>
+    </head>
+
+    <body onload="onLoadOverride()">
+        <a href="./index.html" class="nav">Home</a>
+        <br>
+        <div class="inputForm" id="accountInfo">
+            <label>Account Number</label>
+            <input type="text" name="accountNumber" id="accountNumber"/>
+            <br>
+            <label>Account Type</label>
+            <p>
+                <input type="radio" name="accountType" value="CheckingAccount" id="accountTypeChecking" title="CheckingAccount"
+                onclick="checkingAccountHiddenFalse();"/>
+                CheckingAccount
+            </p>
+            <p>
+                <input type="radio" name="accountType" value="SavingsgAccount" id="accountTypeSavings" title="SavingsgAccount"
+                onclick="savingsAccountHiddenFalse();"/>
+                SavingsAccount
+            </p>
+            <br>
+            <label>Account PIN</label>
+            <input type="password" name="accountPIN" id="accountPIN"/>
+            <br>
+            <label>Account Balance</label>
+            <input type="text" name="accountBalance" id="accountBalance"/>
+            <br>
+            <label>Date Of Account Creation</label>
+            <input type="text" name="dateOfAccountCreation" id="dateOfAccountCreation" disabled="true"/>
+            <br>
+            <label>Account User</label>
+            <input type="text" name="accountUser" id="accountUser"/>
+        </div>
+            
+        <br>
+
+        <div class="inputForm" id="checkingAccountInfo" hidden="true">
+            <label>Checking Account Code</label>
+            <input type="text" name="checkingAccountCode" id="checkingAccountCode"/>
+            <br>
+            <label>Organization</label>
+            <input type="text" name="organization" id="corganization"/>
+        </div>
+
+        <div class="inputForm" id="savingsAccountInfo" hidden="true">
+            <label>Savings Account Code</label>
+            <input type="text" name="savingsAccountCode" id="savingsAccountCode"/>
+            <br>
+            <label>Organization</label>
+            <input type="text" name="organization" id="sorganization"/>
+        </div>
+
+        <button class="button" id="createAccountButton" style="font-size: 8pt" onclick="createNewAccount();">Create Account</button>
+        <button class="button" id="updateAccountButton" style="font-size: 8pt" onclick="createNewAccount();" hidden="true">Update Account</button>
+
+        <script type="text/javascript" src="./account.js"> </script>
+
+        <script lang="javascript">
+            document.getElementById("dateOfAccountCreation").value = new Date().toDateString();
+
+            function checkingAccountHiddenFalse(){
+                selectCheckingAccountType();
+            }
+
+            function savingsAccountHiddenFalse(){
+                selectSavingsAccountType();
+            }
+
+            function createNewAccount(){
+
+                if (document.getElementById("checkingAccountInfo").hidden && document.getElementById("savingsAccountInfo").hidden){
+                    alert("account type undefinded");
+                    return;
+                }
+
+                var obj = null;
+
+                if (document.getElementById("checkingAccountInfo").hidden){
+                    var obj = new SavingsAccount();
+                    obj.setAccountNumber(document.getElementById("accountNumber").value);
+                    obj.setAccountType("SavingsAccount");
+                    obj.setAccountPIN(document.getElementById("accountPIN").value)
+                    obj.setAccountBalance(document.getElementById("accountBalance").value);
+                    obj.setDateOfAccountCreation(document.getElementById("dateOfAccountCreation").value);
+                    obj.setAccountUser(document.getElementById("accountUser").value);                                        
+                    obj.setSavingsAccountCode(document.getElementById("savingsAccountCode").value);
+                    obj.setOrganization(document.getElementById("sorganization").value);
+
+                    if (itemId == 0){
+                        createAccount(obj);
+                    }else{
+                        updateAccount(obj, itemId);
+                    }
+
+                }else{
+                    var obj = new CheckingAccount();
+                    obj.setAccountNumber(document.getElementById("accountNumber").value);
+                    obj.setAccountType("CheckingAccount");
+                    obj.setAccountPIN(document.getElementById("accountPIN").value)
+                    obj.setAccountBalance(document.getElementById("accountBalance").value);
+                    obj.setDateOfAccountCreation(document.getElementById("dateOfAccountCreation").value);
+                    obj.setAccountUser(document.getElementById("accountUser").value);                                            
+                    obj.setCheckingAccountCode(document.getElementById("checkingAccountCode").value);
+                    obj.setOrganization(document.getElementById("corganization").value);
+                    
+                    if (itemId == 0){
+                        createAccount(obj);
+                    }else{
+                        updateAccount(obj, itemId);
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>

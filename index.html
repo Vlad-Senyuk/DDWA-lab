@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Index</title>
+        <link rel="stylesheet" type="text/css" href="./styles.css">
+    </head>
+
+    <body>
+        <a id="createAccount" href="./create_account.html" class="nav">Create Account</a>
+        
+        <br>
+
+        <table id="shortTableOfAccounts">
+        </table>
+
+        <script type="text/javascript" src="./account.js"> </script>
+        <script lang="javascript">
+            fillTable();
+
+            function goToCreate(){
+                document.location.href = './create_account.html';
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "run explorer",
+            "command": "explorer",
+            "windows": {
+                "command": "explorer.exe"
+            },
+            "args": [
+                "index.html"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
