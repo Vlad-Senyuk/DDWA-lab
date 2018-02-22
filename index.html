@@ -7,16 +7,25 @@
 
     <body>
         <a id="createAccount" href="./create_account.html" class="nav">Create Account</a>
-        
+
+        <div>
+            <input type="search" id="searchView" placeholder="Search the account..."/>
+            <button id="searchButton">Search</button>
+        </div>
+
         <br>
 
         <table id="shortTableOfAccounts">
         </table>
 
-        <script type="text/javascript" src="./account.js"> </script>
-        <script lang="javascript">
-            fillTable();
+        <!-- <script type="text/javascript" src="./scripts.js"> </script> -->
 
+        <script src="./bundle.js"> </script>
+ 
+        <script lang="javascript">
+
+            myApp.tableHelper.fillTable();
+    
             function goToCreate(){
                 document.location.href = './create_account.html';
             }

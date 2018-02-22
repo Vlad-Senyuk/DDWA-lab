@@ -1,0 +1,15 @@
+{
+  "engines": {
+    "node": ">= 4.0"
+  },
+  "dependencies": {
+    "babel-loader": "^7.1.2",
+    "deployd": "^1.0.0",
+    "dpd-clientlib": "^0.0.1",
+    "dpd-dashboard": "^0.0.1",
+    "webpack": "^3.11.0"
+  },
+  "scripts": {
+    "build": "webpack"
+  }
+}

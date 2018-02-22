@@ -115,3 +115,33 @@ input[type=password], select {
     background-color: #4CAF50;
     color: white;
 }
+
+.validationMessage{
+    font-size: 6px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: red;
+}
+
+#searchView{
+    width: 80%;
+    height: 43px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#searchButton{
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    height: 40px;
+    width: 10%;
+    font-size: 14px;
+    padding: 10px 24px;
+    border-radius: 5px;
+    text-align: center;
+    vertical-align: middle;
+    margin: 6px 0;
+    background-color: greenyellow; 
+}

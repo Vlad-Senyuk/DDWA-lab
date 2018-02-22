@@ -4,21 +4,12 @@
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="./styles.css">
 
-        <script type="text/javascript" src="./account.js"> </script>
+        <script src="./bundle.js"> </script>
 
         <script lang="javascript">
-            var accountObj = null;
-
             function onLoadOeverride(){
                 var paramValue = window.location.search.replace( '?item=', '');
-
-                var xhr = new XMLHttpRequest();
-                xhr.open("GET", "http://localhost:2403/accounts/" + paramValue, false);
-                xhr.setRequestHeader("Content-Type", "application/json");
-                xhr.send();
-
-                accountObj = JSON.parse(xhr.responseText);
-                fillDetailsTable(accountObj);
+                myApp.tableHelper.fillDetailsTable( myApp.collectionHelperCRUD.getAccountById(paramValue) );
             }
         </script>
     </head>
@@ -27,7 +18,7 @@
         <a href="./index.html" class="nav">Home</a>
         <br>
         <h1 id="userHead"></h1>
-        <table id="accountDetailsTable">
-        </table>
+        <table id="accountDetailsTable"> </table>
+        <br>
     </body>
 </html>

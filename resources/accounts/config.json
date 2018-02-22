@@ -1,0 +1,77 @@
+{
+	"type": "Collection",
+	"properties": {
+		"accountNumber": {
+			"name": "accountNumber",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "accountNumber",
+			"order": 0
+		},
+		"accountType": {
+			"name": "accountType",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "accountType",
+			"order": 1
+		},
+		"accountBalance": {
+			"name": "accountBalance",
+			"type": "number",
+			"typeLabel": "number",
+			"required": false,
+			"id": "accountBalance",
+			"order": 2
+		},
+		"accountPIN": {
+			"name": "accountPIN",
+			"type": "number",
+			"typeLabel": "number",
+			"required": false,
+			"id": "accountPIN",
+			"order": 3
+		},
+		"dateOfAccountCreation": {
+			"name": "dateOfAccountCreation",
+			"type": "date",
+			"typeLabel": "date",
+			"required": false,
+			"id": "dateOfAccountCreation",
+			"order": 4
+		},
+		"accountUser": {
+			"name": "accountUser",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "accountUser",
+			"order": 5
+		},
+		"savingsAccountCode": {
+			"name": "savingsAccountCode",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "savingsAccountCode",
+			"order": 6
+		},
+		"checkingAccountCode": {
+			"name": "checkingAccountCode",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "checkingAccountCode",
+			"order": 7
+		},
+		"organization": {
+			"name": "organization",
+			"type": "string",
+			"typeLabel": "string",
+			"required": false,
+			"id": "organization",
+			"order": 8
+		}
+	}
+}
