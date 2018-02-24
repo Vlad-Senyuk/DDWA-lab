@@ -5,79 +5,82 @@ import {NavigationHelper} from './nav'
 import {Validator} from './validation'
 import {TableHelper} from './table_help'
 
-export function CollectionHelperCRUD(){
-	
-	this.createNewAccount = function(account, callback){
-		
-		if (!validator.isEmpty(account)){
-			var xhr = new XMLHttpRequest();
-			xhr.open("POST", "http://localhost:2403/accounts", true);
-			xhr.setRequestHeader("Content-Type", "application/json");
-			xhr.send( JSON.stringify(account) );
-			
-			if (callback){
-				callback();
-			}
+export class CollectionHelperCRUD {
 
-		}else{
-			alert("Errors!");
+	constructor() {
+		this._url = "http://localhost:2403/accounts";
+		this._myHeaders = new Headers();
+		this._myHeaders.append("Content-Type", "application/json");
+	}
+
+	get url(){
+		return this._url;
+	}
+
+	get myHeaders(){
+		return this._myHeaders;
+	}
+	
+	createNewAccount(account, callback){
+		if (!validator.isEmpty(account)){
+			fetch(this.url, {method: 'POST', headers: this.myHeaders, body: JSON.stringify(account)})
+				.then(function(response){
+					if (callback){
+						callback();
+					}
+				});
 		}
 	}
 	
-	this.updateAccount = function(account, accountId, callback){
+	updateAccount(account, accountId, callback){		
 		if (!validator.isEmpty(account)){
-			var xhr = new XMLHttpRequest();
-			xhr.open("PUT", "http://localhost:2403/accounts/" + accountId, true);
-			xhr.setRequestHeader("Content-Type", "application/json");
-			xhr.send( JSON.stringify(account) );
-
-			if (callback){
-				callback();
-			}
-
-		}else{
-			alert("Errors!");
+			fetch(`${this.url}/${accountId}`, {method: 'PUT', headers: this.myHeaders, body: JSON.stringify(account)})
+				.then(function(response){
+					if (callback){
+						callback();
+					}
+				});
 		}
 	}
 	
-	this.removeAccount = function(itemId){
-		var xhr = new XMLHttpRequest();
-		xhr.open("DELETE", "http://localhost:2403/accounts/" + itemId, false);
-		xhr.setRequestHeader("Content-Type", "application/json");
-		xhr.send();
-		
-		location.reload();
+	removeAccount(itemId){
+		fetch(`${this.url}/${itemId}`, {method: 'DELETE', headers: this.myHeaders})
+				.then(function(response){
+					location.reload();
+				});		
 	}
 	
-	this.confirmRemoving = function(item){
-		var flag = confirm("Remove this account?");
-		
-		if (flag){
+	confirmRemoving(item){	
+		if ( confirm("Remove this account?") ){
 			this.removeAccount(item.value);
 		}
 	}
 	
-	this.getAccountById = function(itemId, callback){
-		var xhr = new XMLHttpRequest();
-		xhr.open("GET", "http://localhost:2403/accounts/" + itemId, false);
-		xhr.setRequestHeader("Content-Type", "application/json");
-		xhr.send();
-		
-		var jsonObj = JSON.parse(xhr.responseText);
-
-		if (callback){
-			callback(jsonObj);
-		}
-		
-		return jsonObj;
+	getAccountById(itemId, callback){
+		fetch(`${this.url}/${itemId}`, {method: 'GET', headers: this.myHeaders})
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(body){
+					if (callback){
+						callback(...[body]);
+					}
+				});
 	}
 
-	this.getAllAccounts = function(){
-		var xhr = new XMLHttpRequest();
-		xhr.open("GET", "http://localhost:2403/accounts", false);
-		xhr.setRequestHeader("Content-Type", "application/json");
-		xhr.send();
-
-		return JSON.parse(xhr.responseText);
+	getAllAccounts(callback, search, searchString){
+		fetch(this.url, {method: 'GET', headers: this.myHeaders})
+				.then(function(response){
+					return response.json();
+				})
+				.then(function(body){
+					if (callback){
+						if (!search){
+							callback(...[body]);
+						}else{
+							callback(...[searchString, myApp.tableHelper.fillTable, body]);
+						}
+					}
+				});
 	}
 }

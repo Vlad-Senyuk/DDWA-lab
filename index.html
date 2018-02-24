@@ -8,9 +8,10 @@
     <body>
         <a id="createAccount" href="./create_account.html" class="nav">Create Account</a>
 
-        <div>
+        <div id="searchDiv">
             <input type="search" id="searchView" placeholder="Search the account..."/>
-            <button id="searchButton">Search</button>
+            <br>
+            <button id="searchButton" onclick="myApp.collectionHelperCRUD.getAllAccounts(myApp.searchHelper.search, true, document.getElementById('searchView').value)">Search</button>
         </div>
 
         <br>
@@ -24,7 +25,7 @@
  
         <script lang="javascript">
 
-            myApp.tableHelper.fillTable();
+            myApp.collectionHelperCRUD.getAllAccounts(myApp.tableHelper.fillTable);
     
             function goToCreate(){
                 document.location.href = './create_account.html';

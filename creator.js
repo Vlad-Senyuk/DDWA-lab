@@ -5,39 +5,37 @@ import {NavigationHelper} from './nav'
 import {Validator} from './validation'
 import {TableHelper} from './table_help'
 
-export function Creator(){
-	this.createAccountObject = function(){
+export class Creator {
+
+	constructor() {}
+
+	createAccountObject(){
 		if (document.getElementById("checkingAccountInfo").hidden && document.getElementById("savingsAccountInfo").hidden){
 			alert("Account type undefinded");
 			return;
 		}
 		
 		var obj = null;
-		
+
 		if (document.getElementById("checkingAccountInfo").hidden){
-			var obj = new SavingsAccount();
-			obj.setAccountNumber(document.getElementById("accountNumber").value);
-			obj.setAccountType("SavingsAccount");
-			obj.setAccountPIN(document.getElementById("accountPIN").value)
-			obj.setAccountBalance(document.getElementById("accountBalance").value);
-			obj.setDateOfAccountCreation(new Date(document.getElementById("dateOfAccountCreation").value));
-			obj.setAccountUser(document.getElementById("accountUser").value);                                        
-			obj.setSavingsAccountCode(document.getElementById("savingsAccountCode").value);
-			obj.setOrganization(document.getElementById("sorganization").value);
-			
-		}else{
-			var obj = new CheckingAccount();
-			obj.setAccountNumber(document.getElementById("accountNumber").value);
-			obj.setAccountType("CheckingAccount");
-			obj.setAccountPIN(document.getElementById("accountPIN").value)
-			obj.setAccountBalance(document.getElementById("accountBalance").value);
-			obj.setDateOfAccountCreation(new Date(document.getElementById("dateOfAccountCreation").value));
-			obj.setAccountUser(document.getElementById("accountUser").value);                                            
-			obj.setCheckingAccountCode(document.getElementById("checkingAccountCode").value);
-			obj.setOrganization(document.getElementById("corganization").value);
+			obj = new SavingsAccount();
+			obj.accountType = "SavingsAccount";                                        
+			obj.savingsAccountCode = document.getElementById("savingsAccountCode").value;
+			obj.organization = document.getElementById("sorganization").value;		
+		}else if (document.getElementById("savingsAccountInfo").hidden){
+			obj = new CheckingAccount(); 
+			obj.accountType = "CheckingAccount";                                           
+			obj.checkingAccountCode = document.getElementById("checkingAccountCode").value;
+			obj.organization = document.getElementById("corganization").value;
 			
 		}
-		
+
+		obj.accountNumber = document.getElementById("accountNumber").value;
+		obj.accountPIN = document.getElementById("accountPIN").value;
+		obj.accountBalance = document.getElementById("accountBalance").value;
+		obj.dateOfAccountCreation = new Date(document.getElementById("dateOfAccountCreation").value);
+		obj.accountUser = document.getElementById("accountUser").value;
+			
 		return obj;
 	}
 }

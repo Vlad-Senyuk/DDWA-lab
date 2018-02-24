@@ -9,7 +9,7 @@
         <script lang="javascript">
             function onLoadOeverride(){
                 var paramValue = window.location.search.replace( '?item=', '');
-                myApp.tableHelper.fillDetailsTable( myApp.collectionHelperCRUD.getAccountById(paramValue) );
+                myApp.collectionHelperCRUD.getAccountById(paramValue, myApp.tableHelper.fillDetailsTable);
             }
         </script>
     </head>
