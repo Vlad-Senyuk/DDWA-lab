@@ -5,12 +5,19 @@
         <link rel="stylesheet" type="text/css" href="./styles.css">
     </head>
 
-    <body>
+    <body onunload="onUnload()">
         <a id="createAccount" href="./create_account.html" class="nav">Create Account</a>
 
-        <div>
+        <div id="searchDiv">
             <input type="search" id="searchView" placeholder="Search the account..."/>
-            <button id="searchButton">Search</button>
+            <br>
+            <button id="searchButton" onclick="myApp.searchHelper.search(document.getElementById('searchView').value, myApp.tableHelper.fillTable, [])">Search</button>
+        </div>
+
+        <br>
+
+        <div id="workerDiv" style="border-style: solid; width: 20%">
+            <h4 id="accountsCount">Количество счетов:</h4>
         </div>
 
         <br>
@@ -24,10 +31,32 @@
  
         <script lang="javascript">
 
-            myApp.tableHelper.fillTable();
-    
+            myApp.collectionHelperCRUD.getAllAccounts().then(body => { myApp.tableHelper.fillTable(body) });
+
             function goToCreate(){
                 document.location.href = './create_account.html';
+            }
+        </script>
+
+        <script lang="javascript">
+            const header = 'Количество счетов: ';
+            var accCount = localStorage.getItem("count");
+
+            myApp.navigationHelper.setAccountsCount(header, accCount);
+
+            if (!!window.Worker){
+                var worker = new Worker("./worker.js");
+
+                worker.onmessage = function(e) {
+                    accCount = e.data[0];
+                    myApp.navigationHelper.setAccountsCount(header, accCount, e.data[1]);
+                };
+
+                worker.postMessage('');
+
+                function onUnload(){
+                    localStorage.setItem("count", accCount);
+                }
             }
         </script>
     </body>

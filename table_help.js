@@ -5,50 +5,66 @@ import {CollectionHelperCRUD} from './crud'
 import {NavigationHelper} from './nav'
 import {Validator} from './validation'
 
-export function TableHelper(){
-	
-	this.fillTable = function(){
-		var jsonObj = myApp.collectionHelperCRUD.getAllAccounts();		
-		var html = "<table><tr><td>Number</td><td>Type</td><td>PIN</td><td>Balance</td><td>Date of Creation</td><td>User</td></tr>";
-		
+export class TableHelper {
+
+	constructor(){}
+
+	fillTable(jsonObj){		
+		var html = `<table><tr><td>Number</td><td>Type</td><td>PIN</td><td>Balance</td><td>Date of Creation</td><td>User</td></tr>`;		
 		var i;
-		for (i = 0; i < jsonObj.length; i++){
-			html += "<tr id='" + jsonObj[i].id + "'>"
-			+ '<td onclick="myApp.navigationHelper.getAccountDetails(this);">' + jsonObj[i].accountNumber + "</td> "
-			+ '<td>' + jsonObj[i].accountType + "</td>"
-			+ '<td>' + jsonObj[i].accountPIN + "</td>"
-			+ '<td>' + jsonObj[i].accountBalance + "</td>"
-			+ '<td>' + jsonObj[i].dateOfAccountCreation.substring(0, 10) + "</td>"
-			+ '<td>' + jsonObj[i].accountUser + '</td>'
-			+ "<td>" + "<button class='tableButtonEdit' value='" + jsonObj[i].id + "' onclick='myApp.navigationHelper.toUpdateAccount(this);'> Edit</button>" + "</td>"
-			+ "<td>" + "<button class='tableButtonDelete' value='" + jsonObj[i].id + "' onclick='myApp.collectionHelperCRUD.confirmRemoving(this);'>Delete</button>" + "</td>"
-			+ "</tr>"
+		var item = null;
+		var usdBalance = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"});
+
+		jsonObj[Symbol.iterator] = function(){
+			var nextIndex = 0;
+
+			return {	
+	   			next(){
+		   			return nextIndex < jsonObj.length ?
+			   			{value: jsonObj[nextIndex++], done: false} :
+			  		 	{done: true};
+	   			}	
+			}
 		}
-		
-		html += "</table>"
-		
+
+		for (let item of jsonObj) {
+			html += `<tr id='${item.id}'>
+				<td onclick='myApp.navigationHelper.getAccountDetails(this);'>${item.accountNumber}</td>
+				<td>${item.accountType}</td>
+				<td>${item.accountPIN}</td>
+				<td>${usdBalance.format(item.accountBalance)}</td>
+				<td>${item.dateOfAccountCreation.substring(0, 10)}</td>
+				<td>${item.accountUser}</td>
+				<td><button class='tableButtonEdit' value='${item.id}' onclick='myApp.navigationHelper.toUpdateAccount(this);'> Edit</button></td>
+				<td><button class='tableButtonDelete' value='${item.id}' onclick='myApp.collectionHelperCRUD.confirmRemoving(this);'>Delete</button></td>
+				</tr>`;
+		}
+			
+		html += `</table>`;
 		document.getElementById('shortTableOfAccounts').innerHTML=html;
 	}
 	
-	this.fillDetailsTable = function(item){
-		document.getElementById("userHead").innerHTML = "Account User: " + item.accountUser;
+	fillDetailsTable(item){
+		var usdBalance = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"});
+
+		document.getElementById("userHead").innerHTML = `Account User: ${item.accountUser.toUpperCase()}`;
 		
-		var html = "<table>" + 
-		"<tr><td>Account Number</td>" + "<td>" + item.accountNumber + "</td>" + "</tr>" +
-		"<tr><td>Account Balance</td>" + "<td>" + item.accountBalance + "</td>" + + "</tr>" +
-		"<tr><td>Account PIN</td>" + "<td>" + item.accountPIN + "</td>" + + "</tr>" +
-		"<tr><td>Account Type</td>" + "<td>" + item.accountType + "</td>" + + "</tr>" +
-		"<tr><td>Account Date of Creation</td>" + "<td>" + item.dateOfAccountCreation.substring(0, 10) + "</td>" + "</tr>";
+		var html = `<table> 
+		<tr><td>Account Number</td><td>${item.accountNumber}</td></tr>
+		<tr><td>Account Balance</td><td>${usdBalance.format(item.accountBalance)}</td></tr>
+		<tr><td>Account PIN</td><td>${item.accountPIN}</td></tr>
+		<tr><td>Account Type</td><td>${item.accountType}</td></tr>
+		<tr><td>Account Date of Creation</td><td>${item.dateOfAccountCreation.substring(0, 10)}</td></tr>`;
 		
 		if (item.accountType == "SavingsAccount"){
-			html += "<tr><td>Savings Code</td>" + "<td>" + item.savingsAccountCode + "</td>" + "</tr>" +
-			"<tr><td>Organization</td>" + "<td>" + item.organization + "</td>" + "</tr>";
+			html += `<tr><td>Savings Code</td><td>${item.savingsAccountCode}</td></tr>
+			<tr><td>Organization</td><td>${item.organization.toUpperCase()}</td></tr>`;
 		}else{
-			html += "<tr><td>Cheking Code</td>" + "<td>" + item.checkingAccountCode + "</td>" + "</tr>" +
-			"<tr><td>Organization</td>" + "<td>" + item.organization + "</td>" + "</tr>";
+			html += `<tr><td>Savings Code</td><td>${item.checkingAccountCode}</td></tr>
+			<tr><td>Organization</td><td>${item.organization.toUpperCase()}</td></tr>`;
 		} 
 		
-		html += '</table>'
+		html += `</table>`;
 		
 		document.getElementById("accountDetailsTable").innerHTML = html;
 	}

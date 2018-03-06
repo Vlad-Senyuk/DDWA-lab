@@ -19,7 +19,7 @@
                         document.getElementById("updateAccountButton").hidden = false;
                         document.getElementById("accountTypeChecking").disabled = true;
                         document.getElementById("accountTypeSavings").disabled = true;
-                        myApp.collectionHelperCRUD.getAccountById(paramValue, myApp.navigationHelper.fillAccountFields);
+                        myApp.collectionHelperCRUD.getAccountById(paramValue).then( body => { myApp.navigationHelper.fillAccountFields(body) } );
                     }         
                 }
         </script>
@@ -85,8 +85,8 @@
             <input type="text" name="organization" id="sorganization"/>
         </div>
 
-        <button class="button" id="createAccountButton" style="font-size: 8pt" onclick="myApp.collectionHelperCRUD.createNewAccount(myApp.creator.createAccountObject(), myApp.navigationHelper.completeOperation);">Create Account</button>
-        <button class="button" id="updateAccountButton" style="font-size: 8pt" onclick="myApp.collectionHelperCRUD.updateAccount(myApp.creator.createAccountObject(), itemId, myApp.navigationHelper.completeOperation);" hidden="true">Update Account</button>
+        <button class="button" id="createAccountButton" style="font-size: 8pt" onclick="myApp.collectionHelperCRUD.createNewAccount(myApp.creator.createAccountObject()).then(function(response){myApp.navigationHelper.completeOperation()});">Create Account</button>
+        <button class="button" id="updateAccountButton" style="font-size: 8pt" onclick="myApp.collectionHelperCRUD.updateAccount(myApp.creator.createAccountObject(), itemId).then(function(response){myApp.navigationHelper.completeOperation()});" hidden="true">Update Account</button>
 
         <script lang="javascript">
 
