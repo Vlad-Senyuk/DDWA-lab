@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <title>Details</title>
+        <meta charset="utf-8">
+       <!--  <link rel="stylesheet" type="text/css" href="../css/styles.css"> -->
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="../bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+
+        <script src="../bundle.js"> </script>
+
+        <script lang="javascript">
+            function onLoadOeverride(){
+                var paramValue = window.location.search.replace( '?item=', '');
+                myApp.navigationHelper.detailsOnLoadOverride(paramValue);
+                //myApp.collectionHelperCRUD.getAccountById(paramValue).then(body => { myApp.tableHelper.fillDetailsTable(body) });
+            }
+        </script>
+    </head>
+
+    <body onload="onLoadOeverride()">
+            <div class="navbar navbar-inverse navbar-fixed-top">
+                    <div class="navbar-inner">
+                        <div class="container">
+                            <img src="../images/nlogo.png" alt="LOGO" height="50dp" width="50dp" class="brand">
+                            <div class="nav-collapse collapse">
+                                <ul class="nav">
+                                    <li class="active"> <a id="createAccount" href="./index.html">Home</a> </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <div class="container">
+            <div class="hero-unit">
+                <h3 id="userHead"></h3>
+                <br>
+                <table class="table" id="accountDetailsTable"> </table>
+            </div>
+        </div>
+        
+        <script src="http://code.jquery.com/jquery.js"></script>
+        <script src="../bootstrap/js/bootstrap.js"></script>
+
+    </body>
+</html>

@@ -1,0 +1,245 @@
+<html>
+    <head>
+        <title>Create Account</title>
+        <meta charset="utf-8">
+        <!-- <link rel="stylesheet" type="text/css" href="../css/styles.css"> -->
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="../bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+
+        <script type="text/javascript" src="../bundle.js"> </script>
+
+        <script lang="javascript">
+
+            var itemId = 0;
+         
+            function onLoadOverride(){
+                    var paramValue = window.location.search.replace( '?item=', '');
+                    
+                    if (paramValue != ''){
+                        itemId = paramValue;
+                        $("#createAccountButton").attr('hidden', true);
+                        $("#updateAccountButton").attr('hidden', false) ;
+                        $("#accountTypeChecking").attr('disabled', true) ;
+                        $("#accountTypeSavings").attr('disabled', true);
+                        myApp.navigationHelper.createAccOnLoadOverride(paramValue);
+                        //myApp.collectionHelperCRUD.getAccountById(paramValue).then( body => { myApp.navigationHelper.fillAccountFields(body) } );
+                    }         
+                }
+        </script>
+
+        <style>
+            input.error {
+                border: 1px solid #ff0000;
+            }
+            label.error {
+                color: #ff0000;
+                    font-weight: normal;
+            }
+
+        </style>
+
+    <link rel="stylesheet" type="text/css" href="../jdp/css/jquery.datepick.css"> 
+    <script type="text/javascript" src="../jdp/js/jquery.plugin.js"></script> 
+    <script type="text/javascript" src="../jdp/js/jquery.datepick.js"></script>
+
+    <!-- <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="../bower_components/moment/min/moment.min.js"></script>
+    <script type="text/javascript" src="../bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <link rel="stylesheet" href="../bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" /> -->
+
+    </head>
+
+    <body onload="onLoadOverride()">
+
+            <div class="navbar navbar-inverse navbar-fixed-top">
+                    <div class="navbar-inner">
+                        <div class="container">
+                            <img src="../images/nlogo.png" alt="LOGO" height="50dp" width="50dp" class="brand">
+                            <div class="nav-collapse collapse">
+                                <ul class="nav">
+                                    <li class="active"> <a id="createAccount" href="./index.html">Home</a> </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        <br>
+        <br>
+        
+        <div class="container">
+            <div class="hero-unit">
+                    <div class="form-signin" id="accountInfo">
+                        <form id="odata">
+                            <label id=accountNumberInfo class="validationMessage"></label>
+                            <input placeholder="Account Number" class="input-block-level" type="text" name="accountNumber" id="accountNumber"/>
+                            <br>
+                            <label class="label label-info">Account Type</label>
+                            <div class="radio">
+                                <label class="label"><input type="radio" name="accountType" value="CheckingAccount" id="accountTypeChecking" title="CheckingAccount"
+                                onclick="myApp.navigationHelper.selectCheckingAccountType();"/>
+                                CheckingAccount
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label class="label">
+                                <input type="radio" name="accountType" value="SavingsgAccount" id="accountTypeSavings" title="SavingsgAccount"
+                                onclick="myApp.navigationHelper.selectSavingsAccountType();"/>
+                                SavingsAccount
+                                </label>
+                            </div>
+                            <br>
+    
+                            <label id=accountPINInfo class="validationMessage"></label>
+                            <input placeholder="Account PIN" class="input-block-level" type="password" name="accountPIN" id="accountPIN"/>
+                            <br>
+                            
+                            <label id=accountBalanceInfo class="validationMessage"></label>
+                            <input placeholder="Account Balance" class="input-block-level" type="text" name="accountBalance" id="accountBalance"/>
+                            <br>
+                            
+                            <label id="dateInfo" class="validationMessage"></label>
+                            <input placeholder="Date Of Account Creation" class="input-block-level" type="text" name="dateOfAccountCreation" id="dateOfAccountCreation"/>
+                            <br>
+                            
+                            <label id=accountUserInfo class="validationMessage"></label>
+                            <input placeholder="Account User" class="input-block-level" type="text" name="accountUser" id="accountUser"/>
+                        </form>
+                        </div>
+                        <br>
+
+                <div class="form-signin" id="checkingAccountInfo" hidden="true">
+                    <label  class="label label-info">Checking Account Code</label>
+                    <input class="input-block-level" type="text" name="checkingAccountCode" id="checkingAccountCode"/>
+                    <br>
+                    <label  class="label label-info">Organization</label>
+                    <input class="input-block-level" type="text" name="organization" id="corganization"/>
+                </div>
+
+                <div class="form-signin" id="savingsAccountInfo" hidden="true">
+                    <label  class="label label-info">Savings Account Code</label>
+                    <input class="input-block-level" type="text" name="savingsAccountCode" id="savingsAccountCode"/>
+                    <br>
+                    <label  class="label label-info">Organization</label>
+                    <input class="input-block-level" type="text" name="organization" id="sorganization"/>
+                </div>
+
+                <br>
+
+                <button class="btn btn-large btn-primary" id="createAccountButton" style="font-size: 8pt" onclick="myApp.collectionHelperCRUD.createNewAccount(myApp.creator.createAccountObject()).then(function(response){myApp.navigationHelper.completeOperation()});">Create Account</button>
+                <button class="btn btn-large btn-primary" id="updateAccountButton" style="font-size: 8pt" onclick="myApp.collectionHelperCRUD.updateAccount(myApp.creator.createAccountObject(), itemId).then(function(response){myApp.navigationHelper.completeOperation()});" hidden="true">Update Account</button>
+
+            </div>
+        </div>
+        
+            
+        
+
+        
+
+        <script lang="javascript">
+
+            document.getElementById("accountPIN").onkeypress = function(e) {
+            e = e || event;
+            if (e.ctrlKey || e.altKey || e.metaKey) return;
+            var chr = getChar(e);
+            if (chr == null) return;
+            if (chr < '0' || chr > '9') {
+            return false;
+                }
+            }
+
+            function getChar(event) {
+                if (event.which == null) {
+                    if (event.keyCode < 32){
+                         return null;
+                    }
+
+                    return String.fromCharCode(event.keyCode)
+                }
+
+                if (event.which != 0 && event.charCode != 0) { 
+                    if (event.which < 32){ 
+                        return null;
+                    }
+                    return String.fromCharCode(event.which); 
+                }
+
+             return null; 
+            }
+        </script>
+
+        <script src="http://code.jquery.com/jquery.js"></script>
+        <script src="../bootstrap/js/bootstrap.js"></script>
+        <script src="../jv/dist/jquery.validate.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="../jdp/css/jquery.datepick.css"> 
+        <script type="text/javascript" src="../jdp/js/jquery.plugin.js"></script> 
+        <script type="text/javascript" src="../jdp/js/jquery.datepick.js"></script>
+
+   <!--  <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="../bower_components/moment/min/moment.min.js"></script>
+    <script type="text/javascript" src="../bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <link rel="stylesheet" href="../bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" /> -->
+
+        <script lang="javascript">
+            $(function(){
+                $('#odata').validate({
+                    rules: {
+                        accountNumber: {
+                            required: true,
+                            minlength: 4
+                        },
+                        accountPIN:{
+                            required: true,
+                            minlength: 4,
+                            digits: true
+                        },
+                        accountBalance:{
+                            required: true
+                        },
+                        dateOfAccountCreation:{
+                            required: true,
+                            date: true
+                        },
+                        accountUser:{
+                            required: true
+                        }
+                    },
+                    messages: {
+                        accountNumber: {
+                            required: "* Account number is required",
+                            minlength: "* Input more than 4 symbols in the field 'Account Number'"
+                            },
+                        accountPIN:{
+                            required: '* Account PIN is required',
+                            minlength: "* Input more than 4 symbols in the field 'Account PIN'",
+                            digits: '* Only digits'
+                        },
+                        accountBalance:{
+                            required: '* Account Balance is required'
+                        },
+                        dateOfAccountCreation:{
+                            required: '* Date of creation is required',
+                            date: '* Incorrect format'
+                        },
+                        accountUser:{
+                            required: '* Account user is required'
+                        }
+                        }
+                        
+                });
+            }); 
+
+             $(function(){
+                $('#dateOfAccountCreation').datepick({dateFormat: 'yyyy/mm/dd'});
+            }); 
+
+            /* $(function () {
+                $('#dateOfAccountCreation').datetimepicker({format:'YYYY/MM/DD'});
+            }); */
+        </script>
+
+    </body>
+</html>
