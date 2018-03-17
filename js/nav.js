@@ -5,34 +5,36 @@ import {CollectionHelperCRUD} from './crud'
 import {Validator} from './validation'
 import {TableHelper} from './table_help'
 
-export function NavigationHelper(){
+export class NavigationHelper{
+
+	constructor(){}
 	
-	this.toUpdateAccount = function(item){
-		var id = item.value;
-		document.location.replace("./create_account.html?item=" + id);
+	toUpdateAccount(item){
+		let id = item.value;
+		document.location.replace(`./create_account.html?item=${id}`);
 	}
 	
-	this.getAccountDetails = function(itemId){
-		document.location.replace("./details.html?item=" + itemId.parentNode.id);
+	getAccountDetails(itemId){
+		document.location.replace(`./details.html?item=${itemId.parentNode.id}`);
 	}
 	
-	this.selectCheckingAccountType = function(){
+	selectCheckingAccountType(){
 		document.getElementById("checkingAccountInfo").hidden = false;
 		document.getElementById("savingsAccountInfo").hidden = true;
 	}
 	
-	this.selectSavingsAccountType = function(){
+	selectSavingsAccountType(){
 		document.getElementById("savingsAccountInfo").hidden = false;
 		document.getElementById("checkingAccountInfo").hidden = true;
 	}
 
-	this.fillAccountFields = function(jsonObj){
+	fillAccountFields(jsonObj){
 		if (jsonObj.accountType == "CheckingAccount"){
 			document.getElementById("accountTypeChecking").checked = true;
 			document.getElementById("checkingAccountInfo").hidden = false;
 			document.getElementById("checkingAccountCode").value = jsonObj.checkingAccountCode;
 			document.getElementById("corganization").value = jsonObj.organization;
-		}else{
+		}else if (jsonObj.accountType == "SavingsAccount"){
 			document.getElementById("accountTypeSavings").checked = true;
 			document.getElementById("savingsAccountInfo").hidden = false;
 			document.getElementById("savingsAccountCode").value = jsonObj.savingsAccountCode;
@@ -46,8 +48,20 @@ export function NavigationHelper(){
 		document.getElementById("accountUser").value = jsonObj.accountUser; 
 	}
 
-	this.completeOperation = function(){
+	completeOperation(){
 		alert("Operation completed");
 		document.location.href = "./index.html";
+	}
+
+	setAccountsCount(header, accCount, time){
+		if (time == undefined){
+			time = '';
+		}
+		
+		document.getElementById('accountsCount').innerHTML = `${time} ${header}${accCount}`;
+	}
+
+	fillTableForIndex(){
+		myApp.collectionHelperCRUD.getAllAccounts().then(body => { myApp.tableHelper.fillTable(body) });
 	}
 }

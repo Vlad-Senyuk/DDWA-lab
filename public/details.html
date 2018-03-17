@@ -2,14 +2,14 @@
     <head>
         <title>Details</title>
         <meta charset="utf-8">
-        <link rel="stylesheet" type="text/css" href="./styles.css">
+        <link rel="stylesheet" type="text/css" href="../css/styles.css">
 
-        <script src="./bundle.js"> </script>
+        <script src="../bundle.js"> </script>
 
         <script lang="javascript">
             function onLoadOeverride(){
                 var paramValue = window.location.search.replace( '?item=', '');
-                myApp.tableHelper.fillDetailsTable( myApp.collectionHelperCRUD.getAccountById(paramValue) );
+                myApp.collectionHelperCRUD.getAccountById(paramValue).then(body => { myApp.tableHelper.fillDetailsTable(body) });
             }
         </script>
     </head>

@@ -5,42 +5,46 @@ import {CollectionHelperCRUD} from './crud'
 import {NavigationHelper} from './nav'
 import {TableHelper} from './table_help'
 
-export function Validator(account){
-	
-	var validationMessage = "Field is emty";
-	
-	this.isEmpty = function(account){
-		var flag = false;
+export class Validator {
+
+	constructor(account){
+		this.account = account;
+	}
 		
-		if (account.getAccountNumber() == ''){
+	isEmpty(account){
+		var flag = false;
+		const validationMessage = "Field is emty";
+
+		let {_accountNumber, _accountPIN, _accountBalance, _accountUser} = account;
+		
+		if (_accountNumber == ''){
 			flag = true;
 			document.getElementById("accountNumberInfo").innerHTML = validationMessage;
 		}
 		
-		if (account.getAccountPIN() == 0){
+		if (_accountPIN == 0){
 			flag = true;
 			document.getElementById("accountPINInfo").innerHTML = validationMessage;
 		}
 		
-		if (account.getAccountBalance() == 0){
+		if (_accountBalance == 0){
 			flag = true;
 			document.getElementById("accountBalanceInfo").innerHTML = validationMessage;
 		}
 		
-		if (account.getAccountUser() == ''){
+		if (_accountUser == ''){
 			flag = true;
 			document.getElementById("accountUserInfo").innerHTML = validationMessage;
 		}
 		
-		var cDate = null;
+		var cDate = null;	
 		
-		
-		if((cDate = new Date(account.getDateOfAccountCreation())) == 'Invalid Date'){
+		if((cDate = new Date(account.dateOfAccountCreation)) == 'Invalid Date'){
 			flag = true;
 			document.getElementById("dateInfo").innerHTML = 'Invalid Date';
 		}
 							
-		if(account.getDateOfAccountCreation() == undefined){
+		if(account.dateOfAccountCreation == undefined){
 			flag = true;
 			document.getElementById("dateInfo").innerHTML = validationMessage;
 		}

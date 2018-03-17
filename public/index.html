@@ -1,11 +1,73 @@
-<!DOCTYPE html>
+<!--index.html-->
 <html>
-<head>
-  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-</head>
-<body>
-  <h1>Welcome to Deployd!</h1>
-  <p>You've just created a Deployd app. You can add front-end files in the <code>public</code> folder.</p>
-  <p>If you're new to Deployd, have a look at the <a href="http://docs.deployd.com/docs/getting-started/what-is-deployd.html">Getting Started Guide</a> or <a href="http://docs.deployd.com/docs/getting-started/your-first-api.html">Hello World Tutorial</a>.</p>
-</body>
+    <head>
+        <meta charset="utf-8">
+        <title>Index</title>
+        <link rel="stylesheet" type="text/css" href="../css/styles.css">
+        <script src="../bundle.js" type="text/javascript"> </script>
+    </head>
+
+    <body>
+        <img src="../images/logo.jpg" alt="LOGO" height="50dp" width="50dp">
+        <br>
+        <a id="createAccount" href="./create_account.html" class="nav">Create Account</a>
+
+        <div id="searchDiv">
+            <input type="search" id="searchView" placeholder="Search the account..."/>
+            <button id="searchButton" onclick="myApp.searchHelper.search(document.getElementById('searchView').value, myApp.tableHelper.fillTable, [])">Search</button>
+        </div>
+
+        <br>
+
+        <div id="workerDiv" style="border-style: solid; width: 20%">
+            <h4 id="accountsCount">Количество счетов:</h4>
+        </div>
+
+        <br>
+
+        <table id="shortTableOfAccounts">
+        </table>
+
+        <br>
+
+        <a href="http://www.google.ru/adwords/benefits/?channel=ha-ssu&subid=by-ru-ha-aw-aw-c-b1_xx_txx_xx_xx_bau-non!o2~179006695-164048615207-kwd-645901596">
+            <img src="../images/banner.gif" alt="LOGO">
+        </a>
+
+        <!-- <script type="text/javascript" src="./scripts.js"> </script> -->
+
+        <script src="../bundle.js" type="text/javascript"> </script>
+
+        <script lang="javascript">
+
+            //myApp.navigationHelper.fillTableForIndex();
+
+            function goToCreate(){
+                document.location.href = './create_account.html';
+            }
+        </script>
+        
+        <script lang="javascript">
+            var header = 'Количество счетов: ';
+            var accCount = localStorage.getItem("count");
+
+            myApp.navigationHelper.setAccountsCount(header, accCount);
+
+            if (!!window.Worker){
+                myApp.navigationHelper.setAccountsCount(header, accCount);
+                var worker = new Worker('./worker.js');
+
+                worker.onmessage = function(e) {
+                    accCount = e.data[0];
+                    myApp.navigationHelper.setAccountsCount(header, accCount, e.data[1]);
+                };
+
+                worker.postMessage('');
+
+                function onUnload(){
+                    localStorage.setItem("count", accCount);
+                }
+            }
+        </script>
+    </body>
 </html>
